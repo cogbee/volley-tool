@@ -39,7 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import android.util.Log;
 
 /*
- * NetWorkInterface ½Ó¿ÚµÄÊµÏÖ¡£ËùÓĞÍøÂç²Ù×÷µÄ·µ»ØÖµ¶¼ÔÚUser.responseÀïÃæ¡£Ò»Ğ©ÓÃ»§µÄ²ÎÊı£¬¶¼ĞèÒªÉèÖÃÔÚUSER.userinfoÀàÖĞ
+ * NetWorkInterface æ¥å£çš„å®ç°ã€‚æ‰€æœ‰ç½‘ç»œæ“ä½œçš„è¿”å›å€¼éƒ½åœ¨User.responseé‡Œé¢ã€‚ä¸€äº›ç”¨æˆ·çš„å‚æ•°ï¼Œéƒ½éœ€è¦è®¾ç½®åœ¨USER.userinfoç±»ä¸­
  */
 
 
@@ -57,20 +57,17 @@ public class NetHelper implements NetWorkInterface{
 	   
 	}  
 	
-	//µÇÂ½
-	public void loginFamily(String url)
+	//ç™»é™†
+	public void loginFamily(String url,final Map<String,String> params)
 	{
 		StringRequest myReq = new StringRequest(Method.POST,
                url,
                mLoginResonseListenerString,
                createMyLoginReqErrorListener()){
-			//ÉèÖÃ²ÎÊı¡£
+			//è®¾ç½®å‚æ•°ã€‚
 			 protected Map<String,String> getParams(){
-		            Map<String,String> params = new HashMap<String, String>();
-		            User.userInfo.setUsername("yourUser");
-					User.userInfo.setPassword("yourPass");
-					params.put("j_username",User.userInfo.getUsername());
-					params.put("j_password",User.userInfo.getPassword());
+		           
+		            
 		            return params;
 		        }
 			 
@@ -86,7 +83,7 @@ public class NetHelper implements NetWorkInterface{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}	
-			            //Í¬²½×÷ÓÃ£¬²»È»volleyÊÇÒì²½µÄ£¬½á¹û²»ÄÜ¼°Ê±
+			            //åŒæ­¥ä½œç”¨ï¼Œä¸ç„¶volleyæ˜¯å¼‚æ­¥çš„ï¼Œç»“æœä¸èƒ½åŠæ—¶
 			            synchronized(User.flag)
 			            {
 			            	User.flag[0] = "true";
@@ -106,11 +103,11 @@ public class NetHelper implements NetWorkInterface{
 	}
 	
 	/*
-	 * string ÇëÇó
+	 * string è¯·æ±‚
 	 */
 	public void simpleStringRequest(String url,final Map<String,String> params)
 	{
-		//cookieÎª¿Õ£¬±£´æÔÚUserÀïÃæ¡£
+		//cookieä¸ºç©ºï¼Œä¿å­˜åœ¨Useré‡Œé¢ã€‚
 		if(User.userInfo.getCookies() == "")
 		{
 			getCookie();
@@ -119,13 +116,13 @@ public class NetHelper implements NetWorkInterface{
                 url,
                 mResonseListenerString,
                 createMyReqErrorListener()){
-			//ÉèÖÃcookie£¨Ò»°ãvolley×Ô¼º¾ÍÒÑ¾­ÉèÖÃÁË¡£ËùÒÔÕâÀïÖ»ÊÇÎªÁËÍòÒ»£©
+			//è®¾ç½®cookieï¼ˆä¸€èˆ¬volleyè‡ªå·±å°±å·²ç»è®¾ç½®äº†ã€‚æ‰€ä»¥è¿™é‡Œåªæ˜¯ä¸ºäº†ä¸‡ä¸€ï¼‰
 			public Map<String,String> getHeaders() throws AuthFailureError {
 				if(User.userInfo.getCookies() != "")
 				     mHeaders.put("Cookie", User.userInfo.getCookies());
 		        return mHeaders;
 		    }
-			//ÉèÖÃ²ÎÊı
+			//è®¾ç½®å‚æ•°
 			protected Map<String,String> getParams(){
 	            return params;
 	        }
@@ -135,7 +132,7 @@ public class NetHelper implements NetWorkInterface{
 			        try {
 			        	Log.i("test","not login parse");
 			            parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-			            //½«½á¹û£¬Ò²¾ÍÊÇcontentÒÔjson¸ñÊ½´«ËÍ¸øUser
+			            //å°†ç»“æœï¼Œä¹Ÿå°±æ˜¯contentä»¥jsonæ ¼å¼ä¼ é€ç»™User
 			            try {
 							User.response = new JSONObject(parsed);
 						} catch (JSONException e) {
@@ -199,7 +196,7 @@ public class NetHelper implements NetWorkInterface{
 	@Override
 	public void loginOff(String url) {
 		// TODO Auto-generated method stub
-		//cookieÎª¿Õ£¬±£´æÔÚUserÀïÃæ¡£
+		//cookieä¸ºç©ºï¼Œä¿å­˜åœ¨Useré‡Œé¢ã€‚
 				if(User.userInfo.getCookies() == "")
 				{
 					getCookie();
@@ -208,13 +205,13 @@ public class NetHelper implements NetWorkInterface{
 		                url,
 		                mResonseforLogoffListenerString,
 		                createMyLoginoffReqErrorListener()){
-					//ÉèÖÃcookie£¨Ò»°ãvolley×Ô¼º¾ÍÒÑ¾­ÉèÖÃÁË¡£ËùÒÔÕâÀïÖ»ÊÇÎªÁËÍòÒ»£©
+					//è®¾ç½®cookieï¼ˆä¸€èˆ¬volleyè‡ªå·±å°±å·²ç»è®¾ç½®äº†ã€‚æ‰€ä»¥è¿™é‡Œåªæ˜¯ä¸ºäº†ä¸‡ä¸€ï¼‰
 					public Map<String,String> getHeaders() throws AuthFailureError {
 						if(User.userInfo.getCookies() != "")
 						     mHeaders.put("Cookie", User.userInfo.getCookies());
 				        return mHeaders;
 				    }
-					//ÉèÖÃ²ÎÊı
+					//è®¾ç½®å‚æ•°
 					protected Map<String,String> getParams(){
 			            return params;
 			        }
@@ -224,7 +221,7 @@ public class NetHelper implements NetWorkInterface{
 					        try {
 					        	Log.i("test","logoff parse");
 					            parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-					            //½«½á¹û£¬Ò²¾ÍÊÇcontentÒÔjson¸ñÊ½´«ËÍ¸øUser
+					            //å°†ç»“æœï¼Œä¹Ÿå°±æ˜¯contentä»¥jsonæ ¼å¼ä¼ é€ç»™User
 					            try {
 									User.response = new JSONObject(parsed);
 								} catch (JSONException e) {
@@ -271,7 +268,7 @@ public class NetHelper implements NetWorkInterface{
 		
 	}
 
-	//ÎÄ¼şÉÏ´«.×¢ÒâÃû×Ö¶Ô¡£
+	//æ–‡ä»¶ä¸Šä¼ .æ³¨æ„åå­—å¯¹ã€‚
 	@Override
 	public void fileUpload(String url, Map<String, File> files,Map<String, String> params) {
 		// TODO Auto-generated method stub
