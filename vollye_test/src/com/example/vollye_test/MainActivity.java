@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
 	Map<String,String> params = new HashMap<String,String>();
 	
 	public String r;
-	//userInfoÒ»Ö±ÔÚÄÚ´æ±£´æ
+	//userInfoä¸€ç›´åœ¨å†…å­˜ä¿å­˜
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
         Button test = (Button)findViewById(R.id.test);
         Button test2 = (Button)findViewById(R.id.test2);
         settings=getSharedPreferences("setting",0);
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         User.mHttpClient = new DefaultHttpClient();
         User.mVolleyQueue = Volley.newRequestQueue(this,new HttpClientStack(User.mHttpClient));
         User.mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
@@ -74,15 +74,19 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				//if(!isNetworkConnected(this))
-				//	Toast.makeText(getApplicationContext(), "ÍøÂç²»¿ÉÓÃÇë¼ì²âÁªÍø×´Ì¬", Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(getApplicationContext(), "ç½‘ç»œä¸å¯ç”¨è¯·æ£€æµ‹è”ç½‘çŠ¶æ€", Toast.LENGTH_SHORT).show();
 				String url = "your url";
 				//Map<String,String> params = new HashMap<String,String>();
-
+				Map<String,String> params = new HashMap<String,String>();
+	            		User.userInfo.setUsername("123456");
+				User.userInfo.setPassword("123456");
+				params.put("j_username",User.userInfo.getUsername());
+				params.put("j_password",User.userInfo.getPassword());
 				Log.i("test","OK1");
 				//test1 = netHelper.JsonPostRequest(url,mVolleyQueue);	
 				//test1 = netHelper.GetRequest(url, mVolleyQueue);
-				netHelper.loginFamily(url);
-				
+				netHelper.loginFamily(url,params);
+				//to sync
 				synchronized(User.flag)
 				{
 					try {
@@ -140,7 +144,7 @@ public class MainActivity extends Activity {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("token", "DJrlPbpJQs21rv1lP41yiA==");
 				String uri = "yoururl";
-				//params ²»ÄÜÎª¿Õ
+				//params ä¸èƒ½ä¸ºç©º
 				netHelper.fileUpload(uri,files,params);
 				synchronized(User.flag)
 	            {
@@ -151,7 +155,7 @@ public class MainActivity extends Activity {
 			}
         });
 
-        //ÍøÂç¼ÓÔØÍ¼Æ¬
+        //ç½‘ç»œåŠ è½½å›¾ç‰‡
         ImageLoader imageLoader = new ImageLoader(User.mVolleyQueue, new BitmapCache());
         NetworkImageView networkImageView = (NetworkImageView) findViewById(R.id.network_image_view);
         networkImageView.setDefaultImageResId(R.drawable.ic_empty);
